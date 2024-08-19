@@ -3,7 +3,10 @@
 Based on the previous work [see here](https://github.com/geekyutao/Inpaint-Anything), except this uses prompt based SAM model (from [grounding-dino](https://github.com/IDEA-Research/GroundingDINO/tree/main)) instead of coordinate based model.
 
 ### TODO : 
-* generate adversarial examples for webqa, nlvr2, vqav2
+* generate adversarial examples for:
+    - [webqa](https://github.com/Abhinand20/MultiModalQA/blob/main/evaluation/segment_substitution_webqa.py)
+    - [vqav2](https://github.com/Abhinand20/MultiModalQA/blob/main/evaluation/segment_substitution_vqav2.py)
+    - nlvr2
 * integrate adversarial example with VoLTA data loaders
 
 
