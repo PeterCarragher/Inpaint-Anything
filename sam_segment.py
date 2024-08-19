@@ -6,7 +6,8 @@ from matplotlib import pyplot as plt
 from typing import Any, Dict, List
 import torch
 
-from segment_anything import SamPredictor, sam_model_registry
+
+from segment_anything import SamPredictor, sam_model_registry, grounded_segmentation
 from utils import load_img_to_array, save_array_to_img, dilate_mask, \
     show_mask, show_points
 
@@ -32,6 +33,46 @@ def predict_masks_with_sam(
         multimask_output=True,
     )
     return masks, scores, logits
+
+
+def predict_masks_with_sam_prompts(
+        img: str,
+        prompts: List[str],
+        # model_type: str,
+        # ckpt_p: str,
+        # device="cuda"
+):
+    # image_url = "http://images.cocodataset.org/val2017/000000039769.jpg"
+    # labels = ["a cat.", "a remote control."]
+    threshold = 0.3
+
+    detector_id = "IDEA-Research/grounding-dino-tiny"
+    segmenter_id = "facebook/sam-vit-base"
+        
+
+    image_array, detections = grounded_segmentation(
+        image=img,
+        labels=prompts,
+        threshold=threshold,
+        polygon_refinement=True,
+        detector_id=detector_id,
+        segmenter_id=segmenter_id
+    )
+    
+    return image_array, detections
+        
+    # sam = sam_model_registry[model_type](checkpoint=ckpt_p)
+    # sam.to(device=device)
+    # predictor = SamPredictor(sam)
+
+    # predictor.set_image(img)
+    # masks, scores, logits = predictor.predict(
+    #     point_coords=point_coords,
+    #     point_labels=point_labels,
+    #     multimask_output=True,
+    # )
+    # return masks, scores, logits
+
 
 
 def build_sam_model(model_type: str, ckpt_p: str, device="cuda"):
