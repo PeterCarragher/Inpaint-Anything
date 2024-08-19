@@ -16,19 +16,6 @@ def setup_args(parser):
         "--input_img", type=str, required=True,
         help="Path to a single input img",
     )
-    # parser.add_argument(
-    #     "--coords_type", type=str, required=True,
-    #     default="key_in", choices=["click", "key_in"], 
-    #     help="The way to select coords",
-    # )
-    # parser.add_argument(
-    #     "--point_coords", type=float, nargs='+', required=True,
-    #     help="The coordinate of the point prompt, [coord_W coord_H].",
-    # )
-    # parser.add_argument(
-    #     "--point_labels", type=int, nargs='+', required=True,
-    #     help="The labels of the point prompt, 1 or 0.",
-    # )
     parser.add_argument(
         "--prompt", type=str, required=True,
         help="Segmentation prompt",
@@ -47,10 +34,6 @@ def setup_args(parser):
         help="The type of sam model to load. Default: 'vit_h"
     )
     parser.add_argument(
-        "--sam_ckpt", type=str, required=True,
-        help="The path to the SAM checkpoint to use for mask generation.",
-    )
-    parser.add_argument(
         "--lama_config", type=str,
         default="./lama/configs/prediction/default.yaml",
         help="The path to the config file of lama model. "
@@ -66,13 +49,9 @@ if __name__ == "__main__":
     """Example usage:
     python remove_anything.py \
         --input_img FA_demo/FA1_dog.png \
-        --coords_type key_in \
-        --point_coords 750 500 \
-        --point_labels 1 \
+        --prompt "dog" \
         --dilate_kernel_size 15 \
         --output_dir ./results \
-        --sam_model_type "vit_h" \
-        --sam_ckpt sam_vit_h_4b8939.pth \
         --lama_config lama/configs/prediction/default.yaml \
         --lama_ckpt big-lama 
     """
@@ -86,15 +65,8 @@ if __name__ == "__main__":
     _, results = predict_masks_with_sam_prompts(
         args.input_img, 
         [args.prompt],
-        # img,
-        # [latest_coords],
-        # args.point_labels,
-        # model_type=args.sam_model_type,
-        # ckpt_p=args.sam_ckpt,
-        # device=device,
     )
     masks = [x.mask.astype(np.uint8) for x in results]
-    # masks = masks.astype(np.uint8) * 255
 
     # dilate mask to avoid unmasked edge effect
     if args.dilate_kernel_size is not None:
@@ -119,8 +91,6 @@ if __name__ == "__main__":
         plt.figure(figsize=(width/dpi/0.77, height/dpi/0.77))
         plt.imshow(img)
         plt.axis('off')
-        # show_points(plt.gca(), [latest_coords], args.point_labels,
-        #             size=(width*0.04)**2)
         plt.savefig(img_points_p, bbox_inches='tight', pad_inches=0)
         show_mask(plt.gca(), mask, random_color=False)
         plt.savefig(img_mask_p, bbox_inches='tight', pad_inches=0)

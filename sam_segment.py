@@ -38,12 +38,7 @@ def predict_masks_with_sam(
 def predict_masks_with_sam_prompts(
         img: str,
         prompts: List[str],
-        # model_type: str,
-        # ckpt_p: str,
-        # device="cuda"
 ):
-    # image_url = "http://images.cocodataset.org/val2017/000000039769.jpg"
-    # labels = ["a cat.", "a remote control."]
     threshold = 0.3
 
     detector_id = "IDEA-Research/grounding-dino-tiny"
@@ -60,18 +55,6 @@ def predict_masks_with_sam_prompts(
     )
     
     return image_array, detections
-        
-    # sam = sam_model_registry[model_type](checkpoint=ckpt_p)
-    # sam.to(device=device)
-    # predictor = SamPredictor(sam)
-
-    # predictor.set_image(img)
-    # masks, scores, logits = predictor.predict(
-    #     point_coords=point_coords,
-    #     point_labels=point_labels,
-    #     multimask_output=True,
-    # )
-    # return masks, scores, logits
 
 
 

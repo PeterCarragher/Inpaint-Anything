@@ -35,33 +35,12 @@ def setup_args(parser):
         help="Output path to the directory with results.",
     )
     parser.add_argument(
-        "--sam_model_type", type=str,
-        default="vit_h", choices=['vit_h', 'vit_l', 'vit_b', 'vit_t'],
-        help="The type of sam model to load. Default: 'vit_h"
-    )
-    parser.add_argument(
-        "--sam_ckpt", type=str, required=True,
-        help="The path to the SAM checkpoint to use for mask generation.",
-    )
-    parser.add_argument(
         "--seed", type=int,
         help="Specify seed for reproducibility.",
     )
     parser.add_argument(
         "--deterministic", action="store_true",
         help="Use deterministic algorithms for reproducibility.",
-    )
-    parser.add_argument(
-        "--lama_config", type=str,
-        default="./lama/configs/prediction/default.yaml",
-        help="The path to the config file of lama model. "
-             "Default: the config of big-lama",
-    )
-    parser.add_argument(
-        "--lama_ckpt", type=str,
-        default="./lama/configs/prediction/default.yaml",
-        help="The path to the config file of lama model. "
-             "Default: the config of big-lama",
     )
 
 
@@ -74,8 +53,6 @@ if __name__ == "__main__":
         --fill_prompt "a teddy bear on a bench" \
         --dilate_kernel_size 15 \
         --output_dir ./results \
-        --sam_model_type "vit_h" \
-        --sam_ckpt sam_vit_h_4b8939.pth 
     """
     parser = argparse.ArgumentParser()
     setup_args(parser)
@@ -87,12 +64,6 @@ if __name__ == "__main__":
     _, results = predict_masks_with_sam_prompts(
             args.input_img, 
             [args.seg_prompt],
-            # img,
-            # [latest_coords],
-            # args.point_labels,
-            # model_type=args.sam_model_type,
-            # ckpt_p=args.sam_ckpt,
-            # device=device,
         )
     masks = [x.mask.astype(np.uint8) for x in results]
     
@@ -120,8 +91,6 @@ if __name__ == "__main__":
         plt.figure(figsize=(width/dpi/0.77, height/dpi/0.77))
         plt.imshow(img)
         plt.axis('off')
-        # show_points(plt.gca(), [latest_coords], args.point_labels,
-        #             size=(width*0.04)**2)
         plt.savefig(img_points_p, bbox_inches='tight', pad_inches=0)
         show_mask(plt.gca(), mask, random_color=False)
         plt.savefig(img_mask_p, bbox_inches='tight', pad_inches=0)
