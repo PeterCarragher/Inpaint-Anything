@@ -93,7 +93,7 @@ if __name__ == "__main__":
         # ckpt_p=args.sam_ckpt,
         # device=device,
     )
-    masks = [x.mask.astype(np.uint8) * 255 for x in results]
+    masks = [x.mask.astype(np.uint8) for x in results]
     # masks = masks.astype(np.uint8) * 255
 
     # dilate mask to avoid unmasked edge effect
