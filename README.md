@@ -20,6 +20,11 @@ python -m pip install -r lama/requirements.txt
 ```
 Download the model checkpoints provided in [LaMa](./lama/README.md) and [big-lama](https://disk.yandex.ru/d/ouP6l8VJ0HpMZg)), and put them into `./pretrained_models`. For simplicity, you can also go [here](https://drive.google.com/drive/folders/1ST0aRbDRZGli0r7OVVOQvXwtadMCuWXg?usp=sharing), directly download [pretrained_models](https://drive.google.com/drive/folders/1wpY-upCo4GIW4wVPnlMh_ym779lLIG2A?usp=sharing), put the directory into `./` and get `./pretrained_models`.
 
+```
+curl -LJO https://huggingface.co/smartywu/big-lama/resolve/main/big-lama.zip
+unzip big-lama.zip
+```
+
 ### Object removal
 
 ```bash
